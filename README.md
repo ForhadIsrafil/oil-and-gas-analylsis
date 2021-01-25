@@ -1,2 +1,2 @@
 # oil-and-gas-analylsis
-## This project out pet project for learning Python Dash
+## This project our pet project for learning Python Dash
