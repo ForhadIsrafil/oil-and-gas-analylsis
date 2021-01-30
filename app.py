@@ -11,7 +11,7 @@ external_stylesheets = [
 external_scripts = []
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets, external_scripts=external_scripts,
                 url_base_pathname='/home/')
-app.title = "Avocado Analytics: Understand Your Avocados!"
+app.title = "Oil & Gas: Analysis!"
 server = app.server
 app.config.suppress_callback_exceptions = True
 
@@ -19,7 +19,7 @@ import dash_auth
 
 # Keep this out of source code repository - save in a file or a database
 VALID_USERNAME_PASSWORD_PAIRS = [
-    ['[username]', '[password']
+    ['baset', '123'],['forhad', '123'],
 ]
 auth = dash_auth.BasicAuth(
     app,
