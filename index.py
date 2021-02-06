@@ -52,9 +52,10 @@ app.layout = html.Div([
 def display_page(pathname):
     if pathname == '/home/':
         data = get_csv_data()
-        # data = data.groupby('Wl_Status')
-        group_data = data.groupby(['County', 'Year', 'town'], as_index=False).mean()
-        bar_fig = px.pie(data_frame=group_data, names='Year', values='County', hole=0.2,
+        # data = data.groupby('Wl_Status', as_index=False)
+        # print(data.head(10))
+        # group_data = data.groupby(['County', 'Year', 'town'], as_index=False).mean()
+        bar_fig = px.pie(data_frame=data, names='Year', values='GasProd', hole=0.2,
                          template='plotly_dark',
                          title='og bar chart')
         return bar_fig
