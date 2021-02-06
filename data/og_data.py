@@ -9,6 +9,7 @@ def get_csv_data():
         dfs.append(pd.read_csv(filename))
 
     df1 = pd.concat(dfs, ignore_index=True)
+    print(type(df1))
     # print(df1.columns)
     df = df1
     return df

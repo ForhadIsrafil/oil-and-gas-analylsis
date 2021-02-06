@@ -15,12 +15,12 @@ layout = html.Div([
 ])
 
 
-@app.callback([Output(component_id='og_bar_chart', component_property='figure')],
-              [Input(component_property='bar_input', component_id='value')])
-def og_b_chart(bar_input):
-    data = get_csv_data
-    # data = data.groupby('Wl_Status')
-    print(data.head())
-    bar_fig = px.pie(data_frame=data, names='County', values=['Year', 'Wl_Status'], hole=0.2, template='plotly_dark',
-                     title='og bar chart')
-    return bar_fig
+# @app.callback([Output(component_id='og_bar_chart', component_property='figure')],
+#               [Input(component_property='bar_input', component_id='value')])
+# def og_b_chart(bar_input):
+#     data = get_csv_data
+#     # data = data.groupby('Wl_Status')
+#     print(data.head())
+#     bar_fig = px.pie(data_frame=data, names='County', values=['Year', 'Wl_Status'], hole=0.2, template='plotly_dark',
+#                      title='og bar chart')
+#     return bar_fig
