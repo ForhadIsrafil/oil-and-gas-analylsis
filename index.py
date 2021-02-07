@@ -37,7 +37,6 @@ from data.og_data import get_csv_data
 # '''
 
 app.layout = html.Div([
-    html.H1("oil gas bar chart", style={'text-align': 'center'}),
     dcc.Location(id='url', refresh=False),
     # html.Div(dash_auth.create_logout_button(), className='two columns', style={'marginTop': 30}),
     html.Div(id='page-content'),
@@ -47,6 +46,8 @@ app.layout = html.Div([
 
 # Update page
 # # # # # # # # #
+from plotly.subplots import make_subplots
+
 @app.callback(Output('og_bar_chart', 'figure'),
               Input('url', 'pathname'))
 def display_page(pathname):
@@ -54,11 +55,14 @@ def display_page(pathname):
         data = get_csv_data()
         # data = data.groupby('Wl_Status', as_index=False)
         # print(data.head(10))
-        # group_data = data.groupby(['County', 'Year', 'town'], as_index=False).mean()
-        bar_fig = px.pie(data_frame=data, names='Year', values='GasProd', hole=0.2,
-                         template='plotly_dark',
-                         title='og bar chart')
-        return bar_fig
+        group_data = data.groupby(['Year'], as_index=False).mean()
+        pie_fig1 = px.pie(data_frame=group_data, names=['GasProd', 'WaterProd', 'OilProd'],
+                          # labels=['GasProd', 'WaterProd', 'OilProd'],
+                          hole=0.5,
+                          template='plotly_dark',
+                          title='Production Summery: 2006 to 2019',width=400, height=400
+                          )
+        return pie_fig1
     else:
         return '404'
 
