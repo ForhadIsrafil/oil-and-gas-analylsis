@@ -1,4 +1,5 @@
-from dash import dash
+import dash
+import dash_bootstrap_components as dbc
 
 external_stylesheets = [
     {
@@ -12,7 +13,8 @@ external_stylesheets = [
     "//fonts.googleapis.com/css?family=Raleway:400,300,600",
     "https://codepen.io/bcd/pen/KQrXdb.css",
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
-    "https://codepen.io/dmcomfort/pen/JzdzEZ.css"
+    "https://codepen.io/dmcomfort/pen/JzdzEZ.css",
+    dbc.themes.BOOTSTRAP
 ]
 external_scripts = ["https://code.jquery.com/jquery-3.2.1.min.js",
                     "https://codepen.io/bcd/pen/YaXojL.js"]
