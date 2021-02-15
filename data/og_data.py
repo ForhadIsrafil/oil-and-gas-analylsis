@@ -1,14 +1,14 @@
 import glob
 import pandas as pd
-
+import os
 columns_array = ['API_WellNo', 'County', 'CoName', 'Hole', 'SideTrck', 'Completion', 'Well_Typ', 'Field',
                  'Wl_Status',
                  'Well_Nm', 'town', 'Prod', 'Form', 'MonthProd', 'GasProd', 'WaterProd', 'OilProd', 'Year',
                  ]
 
-
+root_dir = os.path.abspath(os.curdir)
 def get_csv_data():
-    filenames = glob.glob('I:/Fiverr Projects/oil_gasEnv/og_analysis/data/Oil and Gas Production data' + "/*.csv")
+    filenames = glob.glob(str(root_dir).replace('\\','/') + "/data/Oil and Gas Production data/*.csv")
     dfs = []
     for filename in filenames:
         dfs.append(pd.read_csv(filename))

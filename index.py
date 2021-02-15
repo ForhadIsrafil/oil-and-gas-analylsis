@@ -262,7 +262,7 @@ def display_page(pathname):
         oil = data['OilProd'].sum()
         water = data['WaterProd'].sum()
         no_wells = gas + water + oil
-        print(no_wells)
+
         # print(data.head(10))
         # bar figure start
         bar_group = data[data['Wl_Status'] == 'AC'].groupby('Year', as_index=False).sum()
