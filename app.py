@@ -2,24 +2,14 @@ import dash
 import dash_bootstrap_components as dbc
 
 external_stylesheets = [
-    {
-        "href": "https://fonts.googleapis.com/css2?"
-                "family=Lato:wght@400;700&display=swap",
-        "rel": "stylesheet",
-    },
-    'https://codepen.io/chriddyp/pen/bWLwgP.css',
-    "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css",
-    "https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css",
-    "//fonts.googleapis.com/css?family=Raleway:400,300,600",
-    "https://codepen.io/bcd/pen/KQrXdb.css",
-    "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css",
-    "https://codepen.io/dmcomfort/pen/JzdzEZ.css",
     dbc.themes.BOOTSTRAP
+
 ]
-external_scripts = ["https://code.jquery.com/jquery-3.2.1.min.js",
-                    "https://codepen.io/bcd/pen/YaXojL.js"]
-app = dash.Dash('forhad', external_stylesheets=external_stylesheets, external_scripts=external_scripts,
-                url_base_pathname='/home/')
+# external_scripts = ["https://code.jquery.com/jquery-3.2.1.min.js",
+#                     "https://codepen.io/bcd/pen/YaXojL.js"]
+app = dash.Dash('forhad', external_stylesheets=external_stylesheets, url_base_pathname='/home/',
+                meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0'}])
 app.title = "Oil & Gas: Analysis!"
 server = app.server
 app.config.suppress_callback_exceptions = True

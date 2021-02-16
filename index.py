@@ -69,6 +69,7 @@ app.layout = dbc.Container([
                               max=20,
                               step=0.5,
                               value=[5, 10]
+
                           ),
                           html.H6("Filter by well status:",
                                   ),
@@ -163,7 +164,7 @@ app.layout = dbc.Container([
                           )
 
                           ],
-                style={'box-shadow': '2px 2px 2px lightgrey'},
+                style={'box-shadow': '2px 2px 2px lightgrey', 'background-color':'#3090C7'},
                 width={'size': 4},
                 className='card pt-4 pb-4',
 
@@ -171,20 +172,20 @@ app.layout = dbc.Container([
 
         dbc.Col(dbc.Row(
             [
-                html.Div(children=[html.H4('3225', id='no_wells', ), html.H6('No. of Wells')],
-                         style={'box-shadow': '2px 2px 2px lightgrey'},
+                html.Div(children=[html.H5('3225', id='no_wells', ), html.H6('No. of Wells')],
+                         style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#0080ff'},
                          className='card-body p-2 m-2 text-center border rounded',
                          ),
-                html.Div(children=[html.H4('425M mcf', id='no_gas', ), html.H6('Gas')],
-                         style={'box-shadow': '2px 2px 2px lightgrey'},
+                html.Div(children=[html.H5('425M mcf', id='no_gas', ), html.H6('Gas')],
+                         style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#0080ff'},
 
                          className='card-body p-2 m-2 text-center border rounded'),
-                html.Div(children=[html.H4('2M bbl', id='no_oil', ), html.H6('Oil')],
-                         style={'box-shadow': '2px 2px 2px lightgrey'},
+                html.Div(children=[html.H5('2M bbl', id='no_oil', ), html.H6('Oil')],
+                         style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#0080ff'},
 
                          className='card-body p-2 m-2 text-center border rounded'),
-                html.Div(children=[html.H4('3M bbl', id='no_water', ), html.H6('Water')],
-                         style={'box-shadow': '2px 2px 2px lightgrey'},
+                html.Div(children=[html.H5('3M bbl', id='no_water', ), html.H6('Water')],
+                         style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#0080ff'},
                          className='card-body p-2 m-2 text-center border rounded'),
                 # bar chart start
                 # dbc.Col(children=[
@@ -194,7 +195,7 @@ app.layout = dbc.Container([
 
             ], ),
         ),
-    ], justify='start'),
+    ],        justify='start'),
 
     # pie chart start
     dbc.Row(children=[
@@ -202,7 +203,7 @@ app.layout = dbc.Container([
             # html.H4('Production Summery: 2006 to 2019', className='text-center text-white', ),
             dcc.Graph(id='og_pie_chart1', figure={}, style={'display': 'inline-block'}),
             dcc.Graph(id='og_pie_chart2', figure={}, style={'display': 'inline-block'}),
-        ], style={'width': 480}),
+        ], style={'width': 480, 'height': 546}),
         dbc.Col(children=[
             dcc.Graph(id='og_line_chart', figure={}, style={'height': 446, 'width': 480})
         ], )
