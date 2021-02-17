@@ -110,7 +110,8 @@ app.layout = dbc.Container([
                                   {'label': 'Voided Permit', 'value': 'vp'}
                               ],
                               value=['active'],
-                              multi=True
+                              multi=True,
+                              style={'color': '#255464'}
                           ),
                           dcc.Checklist(
                               options=[
@@ -160,7 +161,8 @@ app.layout = dbc.Container([
                               ],
                               id='bar_input',
                               value=['active'],
-                              multi=True
+                              multi=True,
+                              style={'color': '#255464'}
                           )
 
                           ],
@@ -172,19 +174,19 @@ app.layout = dbc.Container([
 
         dbc.Col(dbc.Row(
             [
-                html.Div(children=[html.H5('3225', id='no_wells', ), html.H6('No. of Wells')],
+                html.Div(children=[html.H5('', id='no_wells', ), html.H6('No. of Wells')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
                          className='card-body p-2 m-2 text-center border rounded text-white',),
 
-                html.Div(children=[html.H5('425M mcf', id='no_gas', ), html.H6('Gas')],
+                html.Div(children=[html.H5('mcf', id='no_gas', ), html.H6('Gas')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
                          className='card-body p-2 m-2 text-center border rounded text-white'),
 
-                html.Div(children=[html.H5('2M bbl', id='no_oil', ), html.H6('Oil')],
+                html.Div(children=[html.H5('bbl', id='no_oil', ), html.H6('Oil')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
                          className='card-body p-2 m-2 text-center border rounded text-white'),
 
-                html.Div(children=[html.H5('3M bbl', id='no_water', ), html.H6('Water')],
+                html.Div(children=[html.H5('bbl', id='no_water', ), html.H6('Water')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
                          className='card-body p-2 m-2 text-center border rounded text-white'),
                 # bar chart start
@@ -300,7 +302,9 @@ def display_page(pathname):
                                            title=''),
                                margin=dict(t=2, l=2, b=2, r=2))
         # line figure end
-
+        gas = str(int(gas/1000)) + 'M mcf'
+        oil = str(int(oil/1000)) + 'M bbl'
+        water = str(int(water/1000)) + 'M bbl'
         return bar_fig, pie_fig1, pie_fig1, line_fig, no_wells, gas, oil, water
     else:
         return '404'
