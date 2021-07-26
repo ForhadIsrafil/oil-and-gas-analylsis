@@ -76,8 +76,8 @@ app.layout = dbc.Container([
                           dcc.RadioItems(
                               options=[
                                   {'label': 'All ', 'value': 'all'},
-                                  {'label': 'Active Only ', 'value': 'active only'},
-                                  {'label': 'Customize ', 'value': 'customize'}
+                                  {'label': 'Active Only ', 'value': 'AC'},
+                                  # {'label': 'Customize ', 'value': 'customize'}
 
                               ],
                               value='active only',
@@ -256,7 +256,7 @@ app.layout = dbc.Container([
      Output('og_line_chart', 'figure'), Output('no_wells', 'children'), Output('no_gas', 'children'),
      Output('no_oil', 'children'),
      Output('no_water', 'children'), ],
-    Input('url', 'pathname'))
+    [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/home/':
         data = get_csv_data().copy()
