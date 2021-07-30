@@ -50,7 +50,7 @@ app.layout = dbc.Container([
                                   ),
                           html.H6("Production Overview",
                                   )],
-                className='text-center',style={'color': '#255464'},
+                className='text-center', style={'color': '#255464'},
                 width={'size': 4}),
 
     ],
@@ -61,15 +61,19 @@ app.layout = dbc.Container([
     ######-------- 2nd row start ---------######
     dbc.Row([
 
-        dbc.Col(children=[html.H6("Filter by construction date (or select range in histogram):",
+        dbc.Col(children=[html.H6("Filter by year: 2006 to 2019",
                                   ),
                           dcc.RangeSlider(
-                              id='my-range-slider',
-                              min=0,
-                              max=20,
-                              step=0.5,
-                              value=[5, 10]
-
+                              id='year_slider',
+                              updatemode='mouseup',
+                              min=2006,
+                              max=2019,
+                              tooltip={'always_visible': False, 'placement': 'bottom'},
+                              drag_value=[2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019],
+                              # step=1,
+                              # value=[2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019],
+                              marks={i: str(i) for i in
+                                     [2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2015, 2016, 2017, 2018, 2019]},
                           ),
                           html.H6("Filter by well status:",
                                   ),
@@ -80,48 +84,29 @@ app.layout = dbc.Container([
                                   # {'label': 'Customize ', 'value': 'customize'}
 
                               ],
-                              value='active only',
+                              id='well_status',
+                              value='all',
                               labelStyle={'display': 'inline-block'},
                               labelClassName='pr-2'
                           ),
+                          html.H6("Filter by well Type:", ),
                           dcc.Dropdown(
+                              id='well_type',
                               options=[
-                                  {'label': 'Active', 'value': 'active'},
-                                  {'label': 'Application Recieved to drill/plug/convert', 'value': 'aprdpc'},
-                                  {'label': 'Cancelled', 'value': 'cancelled'},
-                                  {'label': 'Drilling Completed', 'value': 'drilling completed'},
-                                  {'label': 'Drilled Deeper', 'value': 'drilled deeper'},
-                                  {'label': 'Drilling in progress', 'value': 'dip'},
-                                  {'label': 'Expired Permit', 'value': 'ep'},
-                                  {'label': 'Inactive', 'value': 'i'},
-                                  {'label': 'Not Reported on AWR', 'value': 'nra'},
-                                  {'label': 'Plugged and Abandoned', 'value': 'pa'},
-                                  {'label': 'Permit Issued', 'value': 'pi'},
-                                  {'label': 'Pluddeg Back', 'value': 'pb'},
-                                  {'label': 'Plugged back Multilateral', 'value': 'pbm'},
-                                  {'label': 'Refunded Fee', 'value': 'rf'},
-                                  {'label': 'Released-Water Well', 'value': 'rww'},
-                                  {'label': 'Shut-In', 'value': 'si'},
-                                  {'label': 'temporarily Abandoned', 'value': 'ta'},
-                                  {'label': 'Transferred Permit', 'value': 'tp'},
-                                  {'label': 'Unknown', 'value': 'u'},
-                                  {'label': 'Unknown Located', 'value': 'ul'},
-                                  {'label': 'Unknown Not Found', 'value': 'unf'},
-                                  {'label': 'Voided Permit', 'value': 'vp'}
+                                  {'label': 'GD', 'value': 'GD'},
+                                  {'label': 'OD', 'value': 'OD'},
+                                  {'label': 'GW', 'value': 'GW'},
                               ],
-                              value=['active'],
+                              # value=['active'],
                               multi=True,
                               style={'color': '#255464'}
                           ),
-                          dcc.Checklist(
-                              options=[
-                                  {'label': 'Lock camera', 'value': 'lock camera'}
-                              ],
-                              value=[]
-                          ),
-
-                          html.H6("Filter by well Type:",
-                                  ),
+                          # dcc.Checklist(
+                          #     options=[
+                          #         {'label': 'Lock camera', 'value': 'lock camera'}
+                          #     ],
+                          #     value=[]
+                          # ),
                           dcc.RadioItems(
                               options=[
                                   {'label': 'All', 'value': 'all'},
@@ -176,7 +161,7 @@ app.layout = dbc.Container([
             [
                 html.Div(children=[html.H5('', id='no_wells', ), html.H6('No. of Wells')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
-                         className='card-body p-2 m-2 text-center border rounded text-white',),
+                         className='card-body p-2 m-2 text-center border rounded text-white', ),
 
                 html.Div(children=[html.H5('mcf', id='no_gas', ), html.H6('Gas')],
                          style={'box-shadow': '2px 2px 2px lightgrey', 'background': '#245c6c'},
@@ -256,10 +241,22 @@ app.layout = dbc.Container([
      Output('og_line_chart', 'figure'), Output('no_wells', 'children'), Output('no_gas', 'children'),
      Output('no_oil', 'children'),
      Output('no_water', 'children'), ],
-    [Input('url', 'pathname')])
-def display_page(pathname):
+    [Input('url', 'pathname'), Input('well_status', 'value'), Input('year_slider', 'value'), Input('well_type', 'value')])
+def display_page(pathname, well_status, year_slider, well_type):
+
     if pathname == '/home/':
+        print(well_type)
         data = get_csv_data().copy()
+        try:
+            year_range = [year_slider[0]+y for y in range(year_slider[1]-year_slider[0]+1)]
+            data = data[data['Year'].isin(year_range)]
+        except Exception as e:
+            pass
+        if well_status == 'AC':
+            data = data[data['Wl_Status'] == well_status]
+        if well_type is not None and len(well_type) > 0:
+            data = data[data['Well_Typ'].isin(well_type)]
+
         # data = data.groupby('Wl_Status', as_index=False)
         gas = data['GasProd'].sum()
         oil = data['OilProd'].sum()
@@ -268,7 +265,8 @@ def display_page(pathname):
 
         # print(data.head(10))
         # bar figure start
-        bar_group = data[data['Wl_Status'] == 'AC'].groupby('Year', as_index=False).sum()
+        bar_group = data.groupby('Year', as_index=False).sum()
+        # print(bar_group.Year.astype(int).tolist())
         bar_fig = px.bar(bar_group, x='Year', y='Completion', text='Completion',
                          color_discrete_sequence=px.colors.sequential.Aggrnyl, height=446)
         bar_fig.update_layout(
@@ -302,9 +300,9 @@ def display_page(pathname):
                                            title=''),
                                margin=dict(t=2, l=2, b=2, r=2))
         # line figure end
-        gas = str(int(gas/1000)) + 'M mcf'
-        oil = str(int(oil/1000)) + 'M bbl'
-        water = str(int(water/1000)) + 'M bbl'
+        gas = str(int(gas / 1000)) + 'M mcf'
+        oil = str(int(oil / 1000)) + 'M bbl'
+        water = str(int(water / 1000)) + 'M bbl'
         return bar_fig, pie_fig1, pie_fig1, line_fig, no_wells, gas, oil, water
     else:
         return '404'
