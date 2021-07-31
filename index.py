@@ -96,7 +96,9 @@ app.layout = dbc.Container([
                                   {'label': 'GD', 'value': 'GD'},
                                   {'label': 'OD', 'value': 'OD'},
                                   {'label': 'GW', 'value': 'GW'},
+                                  {'label': 'IW', 'value': 'IW'},
                               ],
+                              placeholder='well Type',
                               # value=['active'],
                               multi=True,
                               style={'color': '#255464'}
@@ -107,48 +109,29 @@ app.layout = dbc.Container([
                           #     ],
                           #     value=[]
                           # ),
-                          dcc.RadioItems(
-                              options=[
-                                  {'label': 'All', 'value': 'all'},
-                                  {'label': 'Productive Only', 'value': 'productive only'},
-                                  {'label': 'Customize', 'value': 'customize'}
-                              ],
-                              value='productive only',
-                              labelStyle={'display': 'inline-block'},
-                              labelClassName='pr-2'
-                          ),
-                          dcc.Dropdown(
-                              options=[
-                                  {'label': 'Brine', 'value': 'brine'},
-                                  {'label': 'Confidential', 'value': 'confidential'},
-                                  {'label': 'Dry Hole', 'value': 'Dry Hole'},
-                                  {'label': 'Disposal', 'value': 'Disposal'},
-                                  {'label': 'Dry Wildcat', 'value': 'Dry Wildcat'},
-                                  {'label': 'Gas Development', 'value': 'Gas Development'},
-                                  {'label': 'Gas Extension', 'value': 'Gas Extension'},
-                                  {'label': 'Gas Wildcat', 'value': 'Gas Wildcat'},
-                                  {'label': 'Gas Injection', 'value': 'Gas Injection'},
-                                  {'label': 'Oil Injection', 'value': 'Oil Injection'},
-                                  {'label': 'Liquefied Petroleum Gas Storage',
-                                   'value': 'Liquefied Petroleum Gas Storage'},
-                                  {'label': 'Moritoring Brine', 'value': 'Moritoring Brine'},
-                                  {'label': 'Monitoring Miscellaneous', 'value': 'Monitoring Miscellaneous'},
-                                  {'label': 'Monitoring Storage', 'value': 'Monitoring Storage'},
-                                  {'label': 'Not Listed', 'value': 'Not Listed'},
-                                  {'label': 'Observation Well', 'value': 'Observation Well'},
-                                  {'label': 'Oil Development', 'value': 'Oil Development'},
-                                  {'label': 'Oil Extension', 'value': 'Oil Extension'},
-                                  {'label': 'Oil Wildcat', 'value': 'Oil Wildcat'},
-                                  {'label': 'Stratigraphic', 'value': 'Stratigraphic'},
-                                  {'label': 'Storage', 'value': 'Storage'},
-                                  {'label': 'Geothermal', 'value': 'Geothermal'},
-                                  {'label': 'Unknown', 'value': 'Unknown'}
-                              ],
-                              id='bar_input',
-                              value=['active'],
-                              multi=True,
-                              style={'color': '#255464'}
-                          )
+                          # dcc.RadioItems(
+                          #     options=[
+                          #         {'label': 'All', 'value': 'all'},
+                          #         {'label': 'Productive Only', 'value': 'productive only'},
+                          #         {'label': 'Customize', 'value': 'customize'}
+                          #     ],
+                          #     value='productive only',
+                          #     labelStyle={'display': 'inline-block'},
+                          #     labelClassName='pr-2'
+                          # ),
+                          # html.H6("Filter by well Production:", ),
+                          # dcc.Dropdown(
+                          #     id='well_prod',
+                          #     options=[
+                          #         {'label': 'Oil Production', 'value': 'OilProd'},
+                          #         {'label': 'Water Production', 'value': 'WaterProd'},
+                          #         {'label': 'Gas Production', 'value': 'GasProd'},
+                          #     ],
+                          #     placeholder='Well Production',
+                          #     # value=['WaterProd'],
+                          #     multi=True,
+                          #     style={'color': '#255464'}
+                          # )
 
                           ],
                 style={'box-shadow': '2px 2px 2px lightgrey', 'background-color': '#255464'},
@@ -241,14 +224,13 @@ app.layout = dbc.Container([
      Output('og_line_chart', 'figure'), Output('no_wells', 'children'), Output('no_gas', 'children'),
      Output('no_oil', 'children'),
      Output('no_water', 'children'), ],
-    [Input('url', 'pathname'), Input('well_status', 'value'), Input('year_slider', 'value'), Input('well_type', 'value')])
-def display_page(pathname, well_status, year_slider, well_type):
-
+    [Input('url', 'pathname'), Input('well_status', 'value'), Input('year_slider', 'value'),
+     Input('well_type', 'value')])
+def display_page(pathname, well_status, year_slider, well_type,):
     if pathname == '/home/':
-        print(well_type)
         data = get_csv_data().copy()
         try:
-            year_range = [year_slider[0]+y for y in range(year_slider[1]-year_slider[0]+1)]
+            year_range = [year_slider[0] + y for y in range(year_slider[1] - year_slider[0] + 1)]
             data = data[data['Year'].isin(year_range)]
         except Exception as e:
             pass

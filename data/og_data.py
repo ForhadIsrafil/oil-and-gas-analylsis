@@ -15,7 +15,7 @@ def get_csv_data():
 
     df1 = pd.concat(dfs, ignore_index=True)
 
-    d = df1.iloc[:, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]]
+    d = df1.iloc[:, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]]
 
     # print(df1.columns)
     # df1.columns = df1.columns.str.strip()
