@@ -33,3 +33,4 @@ six==1.15.0
 ua-parser==0.10.0
 urllib3==1.26.2
 Werkzeug==1.0.1
+whitenoise==5.3.0

@@ -24,7 +24,7 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP],
 app.layout = dbc.Container([
     ######-------- 1st row start ---------######
     dbc.Row([
-        dbc.Col(children=[html.Img(src='assets/dash-logo.png', height=100, width=200)],
+        dbc.Col(children=[html.Img(src='static/dash-logo.png', height=100, width=200)],
                 width={'size': 4}),
         dbc.Col(children=[html.H4("New York Oil and Gas",
                                   ),
