@@ -7,9 +7,9 @@ external_stylesheets = [
 ]
 # external_scripts = ["https://code.jquery.com/jquery-3.2.1.min.js",
 #                     "https://codepen.io/bcd/pen/YaXojL.js"]
-app = dash.Dash('forhad', external_stylesheets=external_stylesheets, url_base_pathname='/home/',
+app = dash.Dash('forhad', external_stylesheets=external_stylesheets,
                 meta_tags=[{'name': 'viewport',
-                            'content': 'width=device-width, initial-scale=1.0'}])
+                            'content': 'width=device-width, initial-scale=1.0'}]) #  url_base_pathname='/home/',
 app.title = "Oil & Gas: Analysis!"
 server = app.server
 app.config.suppress_callback_exceptions = True

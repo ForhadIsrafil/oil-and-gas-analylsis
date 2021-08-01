@@ -226,69 +226,69 @@ app.layout = dbc.Container([
      Output('no_water', 'children'), ],
     [Input('url', 'pathname'), Input('well_status', 'value'), Input('year_slider', 'value'),
      Input('well_type', 'value')])
-def display_page(pathname, well_status, year_slider, well_type,):
-    if pathname == '/home/':
-        data = get_csv_data().copy()
-        try:
-            year_range = [year_slider[0] + y for y in range(year_slider[1] - year_slider[0] + 1)]
-            data = data[data['Year'].isin(year_range)]
-        except Exception as e:
-            pass
-        if well_status == 'AC':
-            data = data[data['Wl_Status'] == well_status]
-        if well_type is not None and len(well_type) > 0:
-            data = data[data['Well_Typ'].isin(well_type)]
+def display_page(pathname, well_status, year_slider, well_type, ):
+    # if pathname == '/home/':
+    data = get_csv_data().copy()
+    try:
+        year_range = [year_slider[0] + y for y in range(year_slider[1] - year_slider[0] + 1)]
+        data = data[data['Year'].isin(year_range)]
+    except Exception as e:
+        pass
+    if well_status == 'AC':
+        data = data[data['Wl_Status'] == well_status]
+    if well_type is not None and len(well_type) > 0:
+        data = data[data['Well_Typ'].isin(well_type)]
 
-        # data = data.groupby('Wl_Status', as_index=False)
-        gas = data['GasProd'].sum()
-        oil = data['OilProd'].sum()
-        water = data['WaterProd'].sum()
-        no_wells = gas + water + oil
+    # data = data.groupby('Wl_Status', as_index=False)
+    gas = data['GasProd'].sum()
+    oil = data['OilProd'].sum()
+    water = data['WaterProd'].sum()
+    no_wells = gas + water + oil
 
-        # print(data.head(10))
-        # bar figure start
-        bar_group = data.groupby('Year', as_index=False).sum()
-        # print(bar_group.Year.astype(int).tolist())
-        bar_fig = px.bar(bar_group, x='Year', y='Completion', text='Completion',
-                         color_discrete_sequence=px.colors.sequential.Aggrnyl, height=446)
-        bar_fig.update_layout(
-            title={'text': 'Completed Wells/Year', 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'},
-            yaxis_title='')
-        # bar figure end
+    # print(data.head(10))
+    # bar figure start
+    bar_group = data.groupby('Year', as_index=False).sum()
+    # print(bar_group.Year.astype(int).tolist())
+    bar_fig = px.bar(bar_group, x='Year', y='Completion', text='Completion',
+                     color_discrete_sequence=px.colors.sequential.Aggrnyl, height=446)
+    bar_fig.update_layout(
+        title={'text': 'Completed Wells/Year', 'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'},
+        yaxis_title='')
+    # bar figure end
 
-        # pie figure start
-        group_data = data.groupby(['Year', 'Completion'], as_index=False).sum()
-        pie_fig1 = px.pie(data_frame=group_data, names=['GasProd', 'WaterProd', 'OilProd'],
-                          # labels=['GasProd', 'WaterProd', 'OilProd'],
-                          hole=0.5,
-                          # template='plotly_dark',  # presentation, plotly_dark
-                          # title='Production Summery: 2006 to 2019',
-                          width=240,
-                          color_discrete_sequence=px.colors.sequential.Aggrnyl,
-                          )
-        pie_fig1.update_layout(
-            legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="left", x=0.01, ), )
-        # pie figure end
+    # pie figure start
+    group_data = data.groupby(['Year', 'Completion'], as_index=False).sum()
+    pie_fig1 = px.pie(data_frame=group_data, names=['GasProd', 'WaterProd', 'OilProd'],
+                      # labels=['GasProd', 'WaterProd', 'OilProd'],
+                      hole=0.5,
+                      # template='plotly_dark',  # presentation, plotly_dark
+                      # title='Production Summery: 2006 to 2019',
+                      width=240,
+                      color_discrete_sequence=px.colors.sequential.Aggrnyl,
+                      )
+    pie_fig1.update_layout(
+        legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="left", x=0.01, ), )
+    # pie figure end
 
-        # line figure start
-        line_data = data.groupby(['Year'], as_index=False).mean()
-        line_fig = px.line(line_data, x='Year', y=['GasProd', 'WaterProd', 'OilProd'],
-                           title='Aggregate: Oil Development', hover_name='Year',
-                           labels={"y": "",
-                                   "WaterProd": "Water Produced (bbl)",
-                                   "OilProd": "Oil Produced (bbl)"}, )
-        line_fig.update_layout(title={'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'}, yaxis_title='',
-                               legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="left", x=0.01,
-                                           title=''),
-                               margin=dict(t=2, l=2, b=2, r=2))
-        # line figure end
-        gas = str(int(gas / 1000)) + 'M mcf'
-        oil = str(int(oil / 1000)) + 'M bbl'
-        water = str(int(water / 1000)) + 'M bbl'
-        return bar_fig, pie_fig1, pie_fig1, line_fig, no_wells, gas, oil, water
-    else:
-        return '404'
+    # line figure start
+    line_data = data.groupby(['Year'], as_index=False).mean()
+    line_fig = px.line(line_data, x='Year', y=['GasProd', 'WaterProd', 'OilProd'],
+                       title='Aggregate: Oil Development', hover_name='Year',
+                       labels={"y": "",
+                               "WaterProd": "Water Produced (bbl)",
+                               "OilProd": "Oil Produced (bbl)"}, )
+    line_fig.update_layout(title={'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'}, yaxis_title='',
+                           legend=dict(orientation="h", yanchor="bottom", y=-0.30, xanchor="left", x=0.01,
+                                       title=''),
+                           margin=dict(t=2, l=2, b=2, r=2))
+    # line figure end
+    gas = str(int(gas / 1000)) + 'M mcf'
+    oil = str(int(oil / 1000)) + 'M bbl'
+    water = str(int(water / 1000)) + 'M bbl'
+    return bar_fig, pie_fig1, pie_fig1, line_fig, no_wells, gas, oil, water
 
+# else:
+# return '404'
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
