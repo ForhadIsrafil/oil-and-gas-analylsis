@@ -29,7 +29,7 @@ app = dash.Dash('forhad', external_stylesheets=external_stylesheets,
                 meta_tags=[{'name': 'viewport',
                             'content': 'width=device-width, initial-scale=1.0'}])  # url_base_pathname='/home/',
 app.title = "Oil & Gas: Analysis!"
-server = app.server
+# server = app.server
 # server.wsgi_app = WhiteNoise(server.wsgi_app, root='static/')
 app.config.suppress_callback_exceptions = True
 
