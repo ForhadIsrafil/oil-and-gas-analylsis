@@ -15,6 +15,7 @@ import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 import dash_bootstrap_components as dbc
 from flask import request
+from plotly.validators.pie import domain
 
 get_csv_data = pd.read_csv('data.csv', )
 
