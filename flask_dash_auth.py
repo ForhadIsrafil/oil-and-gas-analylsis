@@ -11,7 +11,6 @@ import warnings
 import os
 from flask_login import login_user, logout_user, current_user, LoginManager, UserMixin
 import configparser
-from flask import redirect
 
 warnings.filterwarnings("ignore")
 conn = sqlite3.connect('data.sqlite')
@@ -142,16 +141,20 @@ def load_user(user_id):
     , [Input('url', 'pathname')])
 def display_page(pathname):
     if pathname == '/':
+        if current_user.is_authenticated:
+            return data
         return create
     elif pathname == '/login':
-        return login
+        if current_user.is_authenticated:
+            return data
+        else:
+            return login
     elif pathname == '/success':
         if current_user.is_authenticated:
             return success
         else:
             return failed
     elif pathname == '/data':
-        print(current_user.is_authenticated)
         if current_user.is_authenticated:
             return data
         else:
@@ -186,15 +189,22 @@ def update_graph(dropdown_value):
     , [Input('submit-val', 'n_clicks')]
     , [State('username', 'value'), State('password', 'value'), State('email', 'value')])
 def insert_users(n_clicks, un, pw, em):
-    hashed_password = generate_password_hash(pw, method='sha256')
-    if un is not None and pw is not None and em is not None:
-        ins = Users_tbl.insert().values(username=un, password=hashed_password, email=em, )
-        conn = engine.connect()
-        conn.execute(ins)
-        conn.close()
-        return [login]
+    user_ins = Users.query.filter_by(username=un).first() is not None
+    print(user_ins)
+    if user_ins == False:
+        hashed_password = generate_password_hash(pw, method='sha256')
+        if un is not None and pw is not None and em is not None:
+            ins = Users_tbl.insert().values(username=un, password=hashed_password, email=em, )
+            conn = engine.connect()
+            conn.execute(ins)
+            conn.close()
+            return [login]
+        else:
+            return [
+                html.Div([html.H2('Already have a user account?'), dcc.Link('Click here to Log In', href='/login')])]
     else:
-        return [html.Div([html.H2('Already have a user account?'), dcc.Link('Click here to Log In', href='/login')])]
+        return [
+            html.Div([html.H2('Already have a user account?'), dcc.Link('Click here to Log In', href='/login')])]
 
 
 @app.callback(
