@@ -34,6 +34,7 @@ Users_tbl = Table('users', Users.metadata)
 def create_users_table():
     Users.metadata.create_all(engine)
 
+
 # create the table
 try:
     create_users_table()
